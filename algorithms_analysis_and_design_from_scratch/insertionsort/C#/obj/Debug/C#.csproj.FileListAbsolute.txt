@@ -1,7 +1,0 @@
-D:\ahmed\TFS\cloudnativebasecamp\algorithms_analysis_and_design_from_scratch\insertionsort\C#\bin\Debug\C#.exe.config
-D:\ahmed\TFS\cloudnativebasecamp\algorithms_analysis_and_design_from_scratch\insertionsort\C#\bin\Debug\C#.exe
-D:\ahmed\TFS\cloudnativebasecamp\algorithms_analysis_and_design_from_scratch\insertionsort\C#\bin\Debug\C#.pdb
-D:\ahmed\TFS\cloudnativebasecamp\algorithms_analysis_and_design_from_scratch\insertionsort\C#\obj\Debug\C#.csproj.AssemblyReference.cache
-D:\ahmed\TFS\cloudnativebasecamp\algorithms_analysis_and_design_from_scratch\insertionsort\C#\obj\Debug\C#.csproj.CoreCompileInputs.cache
-D:\ahmed\TFS\cloudnativebasecamp\algorithms_analysis_and_design_from_scratch\insertionsort\C#\obj\Debug\C#.exe
-D:\ahmed\TFS\cloudnativebasecamp\algorithms_analysis_and_design_from_scratch\insertionsort\C#\obj\Debug\C#.pdb
