@@ -1,0 +1,3 @@
+D:\ahmed\TFS\cloudnativebasecamp\algorithms_analysis_and_design_from_scratch\insertionsort\Node.js\obj\Debug\Node.js.njsproj.AssemblyReference.cache
+D:\ahmed\TFS\cloudnativebasecamp\algorithms_analysis_and_design_from_scratch\insertionsort\Node.js\obj\Debug\Node.js.njsproj.CoreCompileInputs.cache
+D:\ahmed\TFS\cloudnativebasecamp\algorithms_analysis_and_design_from_scratch\insertionsort\Node.js\bin\Microsoft.NodejsTools.WebRole.dll
