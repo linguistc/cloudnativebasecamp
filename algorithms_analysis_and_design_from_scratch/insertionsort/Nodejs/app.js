@@ -12,4 +12,4 @@ function insertionsort(array) {
     console.log(array);
 }
 
-insertionsort([9, 5, 1, 4, 3]);
+insertionsort([1, 4, 2, 29, 10, 7]);

@@ -58,15 +58,6 @@ void mergeSort(int array[], int start, int end)
 	merge(array, start, midPoint, end);
 }
 
-void readArr(int arr[], int n)
-{
-	for (int i = 0; i < n; ++i)
-	{
-		cout << "Element " << i + 1 << ": ";
-		cin >> arr[i];
-	}
-}
-
 void printArr(int arr[], int n)
 {
 	cout << "[";
@@ -80,11 +71,8 @@ void printArr(int arr[], int n)
 
 int main()
 {
-	int n;
-	cout << "How many Elements to sort? ";
-	cin >> n;
-	int* arr = new int[n];
-	readArr(arr, n);
+	int arr [] { 1, 4, 2, 29, 10, 7 };
+	int n = sizeof(arr)/sizeof(arr[0]);
 	mergeSort(arr, 0, n - 1);
 	printArr(arr, n);
 
