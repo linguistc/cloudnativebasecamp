@@ -20,22 +20,13 @@ internal class Program
         }
     }
 
-    static void PrintArray(int[] arr)
-    {
-        Console.Write("[");
-        for (int i = 0; i < arr.Length; ++i)
-        {
-            Console.Write(arr[i]);
-            if (i != arr.Length - 1)
-                Console.Write(", ");
-        }
-        Console.Write("]");
-    }
+   
     static void Main(string[] args)
     {
         int[] arr = { 1, 4, 2, 29, 10, 7 };
+        Console.WriteLine("[" + String.Join(", ", arr) + "]");
         InsertionSort(arr);
-        PrintArray(arr);
+        Console.WriteLine("[" + String.Join(", ", arr) + "]");
         Console.ReadKey();
     }
 }

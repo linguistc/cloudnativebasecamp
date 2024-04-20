@@ -19,17 +19,7 @@ internal class Program
             }
         }
 
-        Console.Write("[   ");
-        for(i = 0; i < result.Length; ++i)
-        {
-            if (i > 0 && result[i] == 0) break;
-
-            Console.Write(result[i] + "   ");
-        }
-        Console.Write("]\n");
-
-
-
+        Console.WriteLine("[" + String.Join(", ", result) + "]");
     }
 
     // f(n) = O(n)
