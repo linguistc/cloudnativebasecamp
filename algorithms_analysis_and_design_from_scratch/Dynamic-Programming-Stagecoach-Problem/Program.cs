@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
+
+// using List
 public class Program
 {
     const int MAX = int.MaxValue;
@@ -85,3 +88,4 @@ public class Program
         Console.ReadKey();
     }
 }
+
