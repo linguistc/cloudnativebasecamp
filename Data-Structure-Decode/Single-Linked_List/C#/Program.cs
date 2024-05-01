@@ -1,11 +1,11 @@
 ﻿using System;
-using DoublyList;
+using SinglyList;
 
 internal class Program
 {
     static void Main(string[] args)
     {
-        clsLinkedList list = new clsLinkedList();
+        clsLinkedList<int> list = new clsLinkedList<int>();
         list.InsertLast(0);
         list.InsertLast(1);
         list.InsertLast(2);

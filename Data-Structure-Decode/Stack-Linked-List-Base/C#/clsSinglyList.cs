@@ -2,24 +2,22 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DoublyList
+namespace clsSinglyList
 {
-    public class clsLinkedListNode<T>
+    public class clsLinkedListNode <T>
     {
         public T Data;
         public clsLinkedListNode<T> Next;
-        public clsLinkedListNode<T> Parent;
 
         // constructor for the node
         public clsLinkedListNode(T _Data)
         {
             this.Data = _Data;
             this.Next = null;
-            this.Parent = null;
         }
     }
 
-    public class clsLinkedListIterator<T>
+    public class clsLinkedListIterator <T>
     {
         private clsLinkedListNode<T> CurrentNode;
 
@@ -56,7 +54,7 @@ namespace DoublyList
     }
 
 
-    public class clsLinkedList<T>
+    public class clsLinkedList <T>
     {
 
         private int _Length;
@@ -108,13 +106,12 @@ namespace DoublyList
             if (!this.CanInsert(Data)) return;
 
             clsLinkedListNode<T> NewNode = new clsLinkedListNode<T>(Data);
-
+            
             if (this.IsEmpty())
                 this.Head = this.Tail = NewNode;
             else
             {
                 NewNode.Next = this.Head;
-                this.Head.Parent = NewNode;
                 this.Head = NewNode;
             }
 
@@ -128,7 +125,6 @@ namespace DoublyList
             clsLinkedListNode<T> node = this.Head;
 
             this.Head = this.Head.Next;
-            this.Head.Parent = null;
 
             node = null;
             --this.Length;
@@ -145,7 +141,6 @@ namespace DoublyList
             }
             else
             {
-                NewNode.Parent = this.Tail;
                 this.Tail.Next = NewNode;
                 this.Tail = NewNode;
             }
@@ -163,16 +158,10 @@ namespace DoublyList
             clsLinkedListNode<T> NewNode = new clsLinkedListNode<T>(Data);
 
             NewNode.Next = Node.Next;
-            NewNode.Parent = Node;
             Node.Next = NewNode;
             if (this.Tail == Node) // OR (NewNode.Next == null)
-            {
                 this.Tail = NewNode;
-            }
-            else
-            {
-                NewNode.Next.Parent = Node;
-            }
+            
 
             ++this.Length;
         }
@@ -182,23 +171,19 @@ namespace DoublyList
             if (!this.CanInsert(Data)) return;
 
             clsLinkedListNode<T> Node = this.Find(Target);
-            clsLinkedListNode<T> NewNode = new clsLinkedListNode<T>(Data);
-
             if (Node == null) return;
+
+            clsLinkedListNode<T> NewNode = new clsLinkedListNode<T>(Data);
 
             NewNode.Next = Node;
 
-            if (this.Head == Node)
-            {
+            clsLinkedListNode<T> Parent = this.FindParent(Node);
+            
+            if (Parent == null)
                 this.Head = NewNode;
-            }
             else
-            {
-                Node.Parent.Next = NewNode;
-                NewNode.Parent = Node.Parent;
-            }
-            Node.Parent = NewNode;
-
+                Parent.Next = NewNode;
+            
             ++this.Length;
 
         }
@@ -217,23 +202,20 @@ namespace DoublyList
             else if (this.Head == Node)
             {
                 this.Head = Node.Next;
-                this.Head.Parent = null;
-                // Node.Next.Parent = null;
-            }
-            else if (this.Tail == Node)
-            {
-                this.Tail = Node.Parent;
-                this.Tail.Next = null;
-                // Node.Parent.Next = null;
-
             }
             else
             {
-                Node.Next.Parent = Node.Parent;
-                Node.Parent.Next = Node.Next;
-
-                Node.Next = null;
-                Node.Parent = null;
+                clsLinkedListNode<T> Parent = this.FindParent(Node);
+                if (this.Tail == Node)
+                {
+                    this.Tail = Parent;
+                    Parent.Next = null;
+                }
+                else
+                {
+                    Parent.Next = Node.Next;
+                    Node.Next = null;
+                }
             }
 
             Node = null;
@@ -243,7 +225,7 @@ namespace DoublyList
         public clsLinkedList<T> CopyList()
         {
             clsLinkedList<T> CopiedList = new clsLinkedList<T>();
-            for (clsLinkedListIterator<T> itr = this.Begin(); itr.Current() != null; itr.next())
+            for(clsLinkedListIterator<T> itr = this.Begin(); itr.Current() != null; itr.next())
             {
                 CopiedList.InsertLast(itr.data());
             }
@@ -255,13 +237,22 @@ namespace DoublyList
         {
             for (clsLinkedListIterator<T> itr = this.Begin(); itr.Current() != null; itr.next())
             {
-                if (itr.Current().Data.Equals(Data))
+                if (itr.Current().Data.Equals( Data ) )
                     return itr.Current();
             }
             return null;
         }
 
+        public clsLinkedListNode<T> FindParent(clsLinkedListNode<T> Node)
+        {
+            for (clsLinkedListIterator<T> itr = this.Begin(); itr.Current() != null; itr.next())
+            {
+                if(itr.Current().Next == Node)
+                    return itr.Current();
+            }
 
+            return null;
+        }
 
         public void PrintList()
         {
