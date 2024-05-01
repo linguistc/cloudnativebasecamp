@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace SingleList
+namespace DoublyList
 {
     public class clsLinkedListNode
     {
         public int Data;
         public clsLinkedListNode Next;
+        public clsLinkedListNode Parent;
 
         // constructor for the node
         public clsLinkedListNode(int _Data)
         {
             this.Data = _Data;
             this.Next = null;
+            this.Parent = null;
         }
     }
 
@@ -28,9 +30,9 @@ namespace SingleList
         }
 
         // constructor for the iterator with a starting node
-        public clsLinkedListIterator(clsLinkedListNode node)
+        public clsLinkedListIterator(clsLinkedListNode Head)
         {
-            this.CurrentNode = node;
+            this.CurrentNode = Head;
         }
 
         // return the current node's data
@@ -61,6 +63,18 @@ namespace SingleList
 
         public clsLinkedListNode Head;
         public clsLinkedListNode Tail;
+        public int Length
+        {
+            get { return _Length; }
+            set { _Length = value; }
+        }
+
+        public clsLinkedList()
+        {
+            this.Head = null;
+            this.Tail = null;
+            this.Length = 0;
+        }
 
         public bool IsEmpty()
         {
@@ -70,76 +84,102 @@ namespace SingleList
         public void InsertLast(int Data)
         {
             clsLinkedListNode NewNode = new clsLinkedListNode(Data);
-            
-            if(this.IsEmpty())
+            if(IsEmpty())
             {
                 this.Head = NewNode;
                 this.Tail = NewNode;
             }
             else
             {
+                NewNode.Parent = this.Tail;
                 this.Tail.Next = NewNode;
                 this.Tail = NewNode;
             }
-            ++this._Length; 
+
+            ++this.Length;
         }
     
-        public void InsertAfter(clsLinkedListNode Node, int Data)
+        public void InsertAfter(int Target, int Data)
         {
+            clsLinkedListNode Node  = this.Find(Target);
             if (Node == null) return;
 
             clsLinkedListNode NewNode = new clsLinkedListNode(Data);
-
+            
             NewNode.Next = Node.Next;
+            NewNode.Parent = Node;
             Node.Next = NewNode;
+            if(this.Tail == Node) // OR (NewNode.Next == null)
+            {
+                this.Tail= NewNode;
+            }
+            else
+            {
+                NewNode.Next.Parent = Node;
+            }
 
-            if (this.Tail == Node) // OR if(NewNode.Next == null)
-                this.Tail = NewNode;
-
-            ++this._Length;
+            ++this.Length;
         }
 
-        public void InsertBefore(clsLinkedListNode Node, int Data)
+        public void InsertBefore(int Target, int Data)
         {
-            if(Node == null) return;
-
+            clsLinkedListNode Node = this.Find(Target);
             clsLinkedListNode NewNode = new clsLinkedListNode(Data);
+
+            if (Node == null) return;
+
             NewNode.Next = Node;
 
-            clsLinkedListNode Parent = this.FindParent(Node);
-            if(Parent != null)
-                Parent.Next = NewNode;
-            else
+            if(this.Head == Node)
+            {
                 this.Head = NewNode;
+            }
+            else
+            {
+                Node.Parent.Next = NewNode;
+                NewNode.Parent = Node.Parent;
+            }
+            Node.Parent = NewNode;
+
+            ++this.Length;
 
         }
 
-        public void DeleteNode(clsLinkedListNode Node)
+        public void DeleteNode(int Data)
         {
+            clsLinkedListNode Node = this.Find(Data);
+
             if (Node == null) return;
-            clsLinkedListNode Parent = this.FindParent(Node);
 
             if (this.Head == this.Tail)
             {
-               this.Head = this.Tail = null;
+                this.Head = this.Tail = null;
+
             }
-            else if(this.Head == Node)
+            else if (this.Head == Node)
             {
                 this.Head = Node.Next;
-                Node.Next = null;
+                this.Head.Parent = null;
+                // Node.Next.Parent = null;
             }
-            else if(this.Tail == Node)
+            else if (this.Tail == Node)
             {
-                this.Tail = Parent;
-                Parent.Next = null;                
+                this.Tail = Node.Parent;
+                this.Tail.Next = null;
+                // Node.Parent.Next = null;
+
             }
             else
             {
-                Parent.Next = Node.Next;
+                Node.Next.Parent = Node.Parent;
+                Node.Parent.Next = Node.Next;
+
                 Node.Next = null;
+                Node.Parent = null;
             }
 
             Node = null;
+            --this.Length;
         }
        
         public clsLinkedListNode Find(int Data)
@@ -152,15 +192,7 @@ namespace SingleList
             return null;
         }
 
-        public clsLinkedListNode FindParent(clsLinkedListNode Node)
-        {
-            for (clsLinkedListIterator itr = this.Begin(); itr.Current() != null; itr.next())
-            {
-                if (itr.Current().Next == Node)
-                    return itr.Current();
-            }
-            return null;
-        }
+        
 
         public void PrintList()
         {

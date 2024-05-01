@@ -1,5 +1,5 @@
 ﻿using System;
-using SingleList;
+using DoublyList;
 
 internal class Program
 {
@@ -10,20 +10,31 @@ internal class Program
         list.InsertLast(1);
         list.InsertLast(2);
         list.PrintList();
+        Console.WriteLine(list.Length + " items");
 
-        list.InsertAfter(list.Find(1), 98);
+        list.InsertAfter(1, 98);
         list.PrintList();
+        Console.WriteLine(list.Length + " items");
 
-        list.InsertBefore(list.Find(1), 97);
-        list.PrintList();
 
-        list.InsertBefore(list.Find(10), 7777777);
+        list.InsertBefore(1, 97);
         list.PrintList();
-        list.DeleteNode(list.Find(97));
+        Console.WriteLine(list.Length + " items");
+
+
+        list.DeleteNode(98);
         list.PrintList();
-        list.DeleteNode(list.Find(0));
+        Console.WriteLine(list.Length + " items");
+
+        list.DeleteNode(0);
         list.PrintList();
-        Console.WriteLine(list.Head.Data);
+        Console.WriteLine(list.Length + " items");
+
+        Console.WriteLine("Head: "+ list.Head.Data);
+
+
+        list.InsertBefore(10, 7777777);
+        list.PrintList();
 
         Console.ReadKey();
     }
