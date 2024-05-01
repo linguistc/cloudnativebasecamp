@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EB576219-8004-4E77-B051-B702AB1F6577}</ProjectGuid>
+    <ProjectGuid>{3ECFD421-283E-41CC-9613-012F1E709C63}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>C_</RootNamespace>
     <AssemblyName>C#</AssemblyName>
@@ -43,9 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DoublyList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DoublyList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
