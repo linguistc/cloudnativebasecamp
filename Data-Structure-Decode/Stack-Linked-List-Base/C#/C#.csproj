@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EB576219-8004-4E77-B051-B702AB1F6577}</ProjectGuid>
+    <ProjectGuid>{96CA8219-554C-4378-83C0-3DD51B9DC4A9}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>C_</RootNamespace>
     <AssemblyName>C#</AssemblyName>
@@ -43,9 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsStack.cs" />
+    <Compile Include="clsSinglyList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SinglyList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
