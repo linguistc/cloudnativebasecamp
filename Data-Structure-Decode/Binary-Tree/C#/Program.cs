@@ -6,30 +6,53 @@ class Program
 {
     public static void Main(string[] args)
     {
-        BinaryTree<char> tree = new BinaryTree<char>();
-        tree.Insert('A');
-        tree.Insert('B');
-        tree.Insert('C');
-        tree.Insert('D');
-        tree.Insert('E');
-        tree.Insert('F');
-        tree.Insert('G');
-        tree.Insert('H');
-        tree.Insert('I');
-        tree.Print();
+        BinaryTree<int> tree = new BinaryTree<int>();
+        //tree.BSInsert(1);
+        //tree.BSInsert(4);
+        //tree.BSInsert(2);
+        //tree.BSInsert(3);
+        //tree.BSInsert(6);
+        //tree.BSInsert(5);
+        //tree.Print();
 
-        //Console.WriteLine("Height: " + tree.Height());
-        //tree.PreOrder();
+        //Console.WriteLine(tree.IsExsit(8));
+
         //tree.InOrder();
-        //tree.PostOrder();
 
-        tree.Delete('a');
+        //tree.BinarySearchInsert(4);
+        //tree.BinarySearchInsert(6);
+        //tree.BinarySearchInsert(7);
+        //tree.BinarySearchInsert(5);
+        //tree.BinarySearchInsert(2);
+        //tree.BinarySearchInsert(1);
+        //tree.BinarySearchInsert(3);
+        //tree.Print();
+
+        //tree.BinarySearchDelete(4);
+        //tree.Print();
+        //tree.BinarySearchDelete(6);
+        //tree.Print();
+        //tree.BinarySearchDelete(3);
+        //tree.Print();
+        //tree.BinarySearchDelete(5);
+        //tree.Print();
+        //tree.BinarySearchDelete(7);
+        //tree.Print();
+        //tree.BinarySearchDelete(2);
+        //tree.Print();
+        //tree.BinarySearchDelete(1);
+        //tree.Print();
+
+        tree.BinarySearchInsert(1);
+        tree.BinarySearchInsert(2);
+        tree.BinarySearchInsert(3);
+        tree.BinarySearchInsert(4);
+        tree.BinarySearchInsert(5);
+        tree.BinarySearchInsert(6);
+        tree.BinarySearchInsert(7);
         tree.Print();
 
-        tree.Delete('A');
-        tree.Print();
-
-        tree.Delete('B');
+        tree.Balance();
         tree.Print();
 
     }

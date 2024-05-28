@@ -7,6 +7,213 @@ namespace Tree
     {
         private TreeNode _root;
 
+        public bool IsExist(Tdata data)
+        {
+            return BinarySearchFind(data) != null;
+        }
+
+        public void Balance()
+        {
+            List<Tdata> nodes = new List<Tdata>();
+
+            InOrderToArray(this._root, nodes);
+            this._root = RecursiveBalance(0, nodes.Count - 1, nodes);
+        }
+
+        private void InOrderToArray(TreeNode node, List<Tdata> nodes) 
+        {
+            if (node == null) return;
+
+            InOrderToArray(node.Left, nodes);
+            nodes.Add(node.Data);
+            InOrderToArray(node.Right, nodes);
+        }
+
+        private TreeNode RecursiveBalance(int start, int end, List<Tdata> nodes)
+        {
+            if (start > end) return null;
+
+            int mid = (start + end) / 2;
+
+            TreeNode newNode = new TreeNode(nodes[mid]);
+
+            newNode.Left = RecursiveBalance(start, mid - 1, nodes);
+            newNode.Right = RecursiveBalance(mid + 1, end, nodes);
+
+            return newNode;
+        }
+
+        NodeAndParent FindNodeAndParent(Tdata data)
+        {
+            TreeNode currentNode = this._root;
+            TreeNode parent = null;
+            NodeAndParent nodeAndParent = null;
+            bool isLeft = false;
+
+            while (currentNode != null)
+            {
+                if (currentNode.Data.Equals(data))
+                {
+                    nodeAndParent = new NodeAndParent()
+                    {
+                        Node = currentNode,
+                        Parent = parent,
+                        IsLeft = isLeft
+                    };
+                    break;
+
+                }
+                else if (currentNode.Data.CompareTo(data) > 0)
+                {
+                    parent = currentNode;
+                    currentNode = currentNode.Left;
+                    isLeft = true;
+                }
+                else
+                {
+                    parent = currentNode;
+                    currentNode = currentNode.Right;
+                    isLeft = false;
+                }
+
+            }
+
+                return nodeAndParent;
+
+        }
+
+        private TreeNode BinarySearchFind(Tdata data)
+        {
+            TreeNode currentNode = this._root;
+
+            while (currentNode != null)
+            {
+                if (currentNode.Data.Equals(data))
+                    return currentNode;
+
+                else if (currentNode.Data.CompareTo(data) > 0)
+                    currentNode = currentNode.Left;
+
+                else
+                    currentNode = currentNode.Right;               
+            }
+
+            return null;
+        }
+
+        public void BinarySearchInsert(Tdata data)
+        {
+            TreeNode newNode = new TreeNode(data);
+
+            if (this._root == null) 
+            {
+                this._root = newNode;
+                return;
+            }
+
+            TreeNode currentNode = this._root;
+
+            while (currentNode != null)
+            {
+                if (currentNode.Data.CompareTo(data) > 0) 
+                {
+                    if (currentNode.Left == null)
+                    {
+                        currentNode.Left = newNode;
+                        break;
+                    }
+                    else
+                        currentNode = currentNode.Left;
+                }
+                else
+                {
+                    if (currentNode.Right == null)
+                    {
+                        currentNode.Right = newNode;
+                        break;
+                    }
+                    else
+                        currentNode = currentNode.Right;
+                }
+            }
+        }
+
+        public void BinarySearchDelete(Tdata data)
+        {
+            NodeAndParent nodeAndParentInfo = this.FindNodeAndParent(data);
+
+            if (nodeAndParentInfo.Node == null) return;
+
+            if (nodeAndParentInfo.Node.Left != null && nodeAndParentInfo.Node.Right != null)
+            {
+                this.BinarySearchDelete_HasChilds(nodeAndParentInfo.Node);
+            }
+            else if (nodeAndParentInfo.Node.Left != null ^ nodeAndParentInfo.Node.Right != null)
+            {
+                this.BinarySearchDelete_HasOneChild(nodeAndParentInfo.Node);
+            }
+            else
+            {
+                this.BinarySearchDelete_Leaf(nodeAndParentInfo);
+            }
+
+        }
+
+        private void BinarySearchDelete_Leaf(NodeAndParent nodeAndParentInfo)
+        {
+            if (nodeAndParentInfo.Parent == null)
+                this._root = null;
+            else
+            {
+                if (nodeAndParentInfo.IsLeft)
+                    nodeAndParentInfo.Parent.Left = null;
+                
+                else
+                    nodeAndParentInfo.Parent.Right = null;
+            }
+        }
+
+        private void BinarySearchDelete_HasOneChild(TreeNode nodeToDelete)
+        {
+            TreeNode nodeToReplace = null;
+
+            if (nodeToDelete.Left != null)
+                nodeToReplace = nodeToDelete.Left;
+            else
+                nodeToReplace = nodeToDelete.Right;
+
+            nodeToDelete.Data = nodeToReplace.Data;
+            nodeToDelete.Left = nodeToReplace.Left;
+            nodeToDelete.Right = nodeToReplace.Right;
+        }
+
+        private void BinarySearchDelete_HasChilds(TreeNode nodeToDelete)
+        {
+            TreeNode currentNode = nodeToDelete.Right;
+            TreeNode parent = null;
+
+            // Find the leftmost node in the right subtree of nodeToDelete
+            while (currentNode.Left != null)
+            {
+                parent = currentNode;
+                currentNode = currentNode.Left;
+            }
+
+            // Re-link the parent node's left child to currentNode's right child, if applicable
+            if (parent != null)
+            {
+                parent.Left = currentNode.Right;
+            }
+            else
+            {
+                // If the parent is null, it means nodeToDelete's right child had no left child
+                nodeToDelete.Right = currentNode.Right;
+            }
+
+            nodeToDelete.Data = currentNode.Data;
+        }
+
+
         public void Insert(Tdata data)
         {
             TreeNode newNode = new TreeNode(data);
@@ -70,203 +277,6 @@ namespace Tree
             Console.WriteLine();
         }
 
-        //public Tdata TestLastNode()
-        //{
-        //    return this._lastNode(this._root).Data;
-        //}
-
-        
-        // Not Completed
-        public void Delete(Tdata data)
-        {
-            TreeNode target = this._find(data);
-
-            if (target == null) return;
-
-
-            TreeNode targetParent = this._findParent(data);
-
-            TreeNode lastNode = this._lastNode();
-            TreeNode lastNodeParent = this._findParent(lastNode.Data);
-            
-            if (target == lastNode)
-            {
-                if (targetParent == null) // Target is root and only node in tree
-                {
-                    this._root = null;
-                }
-                else
-                {
-                    if (targetParent.Left == target) targetParent.Left = null;
-                    else targetParent.Right = null;
-                }
-                return;
-            }
-
-            // Preserve the target's children
-            TreeNode targetLeft = target.Left;
-            TreeNode targetRight = target.Right;
-
-            // Clear the last node from its previous position
-            if (lastNodeParent != null)
-            {
-                if (lastNodeParent.Left == lastNode)
-                    lastNodeParent.Left = null;
-                else
-                    lastNodeParent.Right = null;
-            }
-
-            // If target is the root
-            if (targetParent == null)
-            {
-                this._root = lastNode;
-            }
-            else
-            {
-                if (targetParent.Left == target)
-                    targetParent.Left = lastNode;
-                else
-                    targetParent.Right = lastNode;
-            }
-
-            lastNode.Left = targetLeft;
-            lastNode.Right = targetRight;
-
-            //// If the target was the root, update the root reference
-            //if (target == this._root)
-            //{
-            //    this._root = lastNode;
-            //}
-
-
-
-            //// Move the last node to the target's position
-            //if (targetParent != null)
-            //{
-            //    if (targetParent.Left == target)
-            //        targetParent.Left = lastNode;
-            //    else
-            //        targetParent.Right = lastNode;
-            //}
-            //else
-            //{
-            //    // Target is root
-            //    this._root = lastNode;
-            //}
-
-            //lastNode.Left = target.Left;
-            //lastNode.Right = target.Right;
-
-
-
-
-            //// clearing the pointer of last node parent
-            //if (lastNodeParent != null)
-            //{
-            //    if (lastNodeParent.Left == lastNode)
-            //        lastNodeParent.Left = null;
-            //    else
-            //        lastNodeParent.Right = null;
-            //}
-
-
-
-        }
-
-        TreeNode _find(Tdata data)
-        {
-            if (this._root == null)
-                return null;
-
-            Queue<TreeNode> queue = new Queue<TreeNode>();
-            queue.Enqueue(this._root);
-
-            while (queue.Count > 0)
-            {
-                TreeNode currentNode = queue.Dequeue();
-
-                if (currentNode.Data.Equals(data))
-                    return currentNode;
-
-                if (currentNode.Left != null)
-                    queue.Enqueue(currentNode.Left);
-                if (currentNode.Right != null)
-                    queue.Enqueue(currentNode.Right);
-            }
-
-            return null;
-        }
-
-        //public Tdata FindParent(Tdata data)
-        //{
-        //    if (this._findParent(data) == null)
-        //    {
-        //        Console.WriteLine($"{data} Has No Parent");
-        //        return default(Tdata);
-        //    }
-
-        //    Tdata Parent = this._findParent(data).Data;
-        //    return Parent;
-        //}
-
-        // Don't use it unless the target is found;
-        TreeNode _findParent(Tdata data)
-        {
-
-            if (this._root == null || this._root.Data.Equals(data))
-                return null;
-
-
-            Queue<TreeNode> queue = new Queue<TreeNode>();
-            queue.Enqueue(this._root);
-
-            while (queue.Count > 0)
-            {
-                TreeNode parentNode = queue.Dequeue();
-                if ( parentNode.Left == null || parentNode.Right == null)
-                    break;
-                
-
-                if (parentNode.Left.Data.Equals(data) || parentNode.Right.Data.Equals(data))
-                    return parentNode;
-
-
-                if(parentNode.Left != null)
-                    queue.Enqueue(parentNode.Left);
-                if (parentNode.Right != null)    
-                    queue.Enqueue(parentNode.Right);
-
-            }
-
-            return null;
-        }
-
-        TreeNode _lastNode()
-        {
-            if (this._root == null)
-                return null;
-
-            TreeNode currentNode = this._root;
-
-            Queue<TreeNode> queue = new Queue<TreeNode>();
-            queue.Enqueue(this._root);
-
-            while (queue.Count > 0)
-            {
-                currentNode = queue.Dequeue();
-
-                if (currentNode.Left != null)
-                    queue.Enqueue(currentNode.Left);
-
-                if (currentNode.Right != null)
-                    queue.Enqueue(currentNode.Right);
-               
-            }
-
-
-            return currentNode;
-        }
-
         private int _height(TreeNode node)
         {
             if (node == null)
@@ -314,6 +324,13 @@ namespace Tree
             }
 
         } // class TreeNode
+
+        private class NodeAndParent
+        {
+            public TreeNode Node;
+            public TreeNode Parent;
+            public bool IsLeft;
+        }
 
         //============================ Printer
         class NodeInfo
